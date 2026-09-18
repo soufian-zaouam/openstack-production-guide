@@ -1,0 +1,39 @@
+{
+  "episode": "06",
+  "problem": "Nova, libvirt and QEMU all say fine. The VM is unreachable. What did the guest see?",
+  "command": "openstack console log show --lines 100 <server-id>",
+  "safety": "READ ONLY",
+  "source_of_truth": "The guest's serial console, since boot — read through nova-compute.",
+  "diagram": [
+    "CLI → Nova API → RabbitMQ → nova-compute → libvirt → console.log",
+    "~needs the compute path · file: /var/lib/nova/instances/<uuid>/console.log"
+  ],
+  "fields": [
+    ["Linux version · console=ttyS0", "kernel running, console works"],
+    ["Cannot open root device", "boot disk missing → storage"],
+    ["ci-info: eth0 | True | 10.x", "IP by DHCP: tap, port, DHCP, SG ok at boot"],
+    ["169.254.169.254 ... timed out", "metadata unreachable"],
+    ["soft lockup · task blocked", "host contention · storage stalls"],
+    ["login:", "boot completed; look between port and user"]
+  ],
+  "do_not_assume": [
+    ["empty log", "never booted"],
+    ["IP at boot", "reachable now"],
+    ["silence after login", "healthy guest"],
+    ["409 / timeout", "a guest problem"],
+    ["boot OK", "network OK"]
+  ],
+  "path": [
+    "console log", "where does it stop?", "storage · port · metadata · host branch", "console url show",
+    "port show", "root cause"
+  ],
+  "next_check": [
+    "tail -n 100 /var/lib/nova/instances/<uuid>/console.log",
+    "openstack console url show --novnc <server-id>",
+    "openstack port list --server <server-id>",
+    "openstack port show <port-id>"
+  ],
+  "not_yet": "Not yet: server reboot (rewrites the log — copy it first) · rescue · guest changes",
+  "footer_left": "One Command, One Investigation · #06",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
