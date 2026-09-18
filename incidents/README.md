@@ -18,25 +18,24 @@ Each case is a composite of real patterns from production OpenStack platforms, g
 Every case follows the same structure, so that they can be compared and so that the reader can reproduce the investigation on their own platform:
 
 1. **Context** — the platform, generalised: what matters for the reasoning, nothing that identifies it.
-2. 2. **Timeline** — the events with their source (alert, command output, log line, decision), in order.
-   3. 3. **Symptoms** — what was visible, to whom, and what the first hypothesis in the room was.
-      4. 4. **Investigation** — the read-only checks, in the order they were run, with what each one established and ruled out. Commands are labelled `READ ONLY`, `STATE CHANGING` or `POTENTIALLY DISRUPTIVE`. Where a check is covered by an episode of [One Command, One Investigation](../series/one-command-one-investigation/README.md), the case points to it rather than repeating it.
-         5. 5. **Cause, in three layers** — the immediate cause, the contributing cause, and the reason it reached production.
-            6. 6. **Decision** — what was done, the options that were rejected, and why.
-               7. 7. **Blast radius and rollback** — written before the change, as they should be.
-                  8. 8. **Follow-ups** — each with an owner (a role, never a name) and a condition for closing it.
-                     9. 9. **What you can reproduce** — the read-only commands a reader can run on their own platform to check whether the same conditions exist.
-                        10. 10. **Sources** — the documentation each factual claim rests on.
-                           
-                            11. The format is also available as a template: [incident record template](../methodology/incident-record-template.md).
-                           
-                            12. ## What these cases are not
-                           
-                            13. They are not runbooks. A runbook says what to do; a case shows how a decision was reached under uncertainty, with the information available at the time. Several of the decisions here were not "technically clean"; they were the ones that kept the blast radius bounded and the way back open. The reasoning is meant to be reused, not the sequence.
-                           
-                            14. The cases are also not the book's stories retold. Several of them appear in [OpenStack, the Day After Tomorrow](https://github.com/soufian-zaouam/openstack-the-day-after-tomorrow) as short *From the field* passages, where they serve an argument about how platforms are operated. Here they carry the technical file: the commands, the evidence, the alternatives, and the follow-ups.
-                           
-                            15. ---
-                           
-                            16. *Part of the [OpenStack Production Guide](../README.md). Same licence as the rest of the repository.*
-                            17. 
+2. **Timeline** — the events with their source (alert, command output, log line, decision), in order.
+3. **Symptoms** — what was visible, to whom, and what the first hypothesis in the room was.
+4. **Investigation** — the read-only checks, in the order they were run, with what each one established and ruled out. Commands are labelled `READ ONLY`, `STATE CHANGING` or `POTENTIALLY DISRUPTIVE`. Where a check is covered by an episode of [One Command, One Investigation](../series/one-command-one-investigation/README.md), the case points to it rather than repeating it.
+5. **Cause, in three layers** — the immediate cause, the contributing cause, and the reason it reached production.
+6. **Decision** — what was done, the options that were rejected, and why.
+7. **Blast radius and rollback** — written before the change, as they should be.
+8. **Follow-ups** — each with an owner (a role, never a name) and a condition for closing it.
+9. **What you can reproduce** — the read-only commands a reader can run on their own platform to check whether the same conditions exist.
+10. **Sources** — the documentation each factual claim rests on.
+
+The format is also available as a template: [incident record template](../methodology/incident-record-template.md).
+
+## What these cases are not
+
+They are not runbooks. A runbook says what to do; a case shows how a decision was reached under uncertainty, with the information available at the time. Several of the decisions here were not "technically clean"; they were the ones that kept the blast radius bounded and the way back open. The reasoning is meant to be reused, not the sequence.
+
+The cases are also not the book's stories retold. Several of them appear in [OpenStack, the Day After Tomorrow](https://github.com/soufian-zaouam/openstack-the-day-after-tomorrow) as short *From the field* passages, where they serve an argument about how platforms are operated. Here they carry the technical file: the commands, the evidence, the alternatives, and the follow-ups.
+
+---
+
+*Part of the [OpenStack Production Guide](../README.md). Same licence as the rest of the repository.*
