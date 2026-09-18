@@ -72,5 +72,13 @@ Check which RabbitMQ version and metadata store your cluster uses before followi
 >
 > Purging queues during recovery means accepting that in-flight operations are lost rather than replayed. That is sometimes the right decision, and always a decision.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#16 `rabbitmqctl cluster_status`, `list_queues`, `rabbitmq-diagnostics`](../series/one-command-one-investigation/16-rabbitmq-cluster-status.md).
+
+Incident case studies where this page's checks were used under pressure: [RabbitMQ partition: stopping the APIs](../incidents/rabbitmq-partition-api-stop.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [MariaDB / Galera](mariadb-galera.md) · Back to [OpenStack services](control-plane-services.md)
