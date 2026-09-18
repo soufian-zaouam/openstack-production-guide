@@ -1,7 +1,10 @@
 name: Render investigation memos
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [v1.1]
+    paths:
+      - .github/workflows/render-memos.yml
 
 permissions:
   contents: write
