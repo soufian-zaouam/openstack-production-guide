@@ -1,0 +1,82 @@
+{
+  "episode": "20",
+  "problem": "Six VMs unreachable, five hosts, three projects, 07:41. \"Should we just reboot them?\"",
+  "command": "the nineteen commands, in the order the answers choose",
+  "safety": "READ ONLY → DECISION",
+  "source_of_truth": "Each layer's own witness, asked in turn — then a decision with its blast radius written down.",
+  "diagram": [
+    "server show → service/agent list → virsh domstate → QEMU log → volume show → ceph -s → osd df tree",
+    "~22 minutes · 9 commands · nothing changed"
+  ],
+  "fields": [
+    [
+      "#01 server show",
+      "ACTIVE, UP, 5 hosts — not a host, not Nova"
+    ],
+    [
+      "#02 #08 lists",
+      "all up — not the bus"
+    ],
+    [
+      "#04 domstate --reason",
+      "paused (I/O error) — storage, not network"
+    ],
+    [
+      "#05 QEMU log",
+      "ENOSPC on rbd, same minute everywhere"
+    ],
+    [
+      "#14 ceph -s · osd df tree",
+      "one full OSD; wrong CRUSH weights"
+    ],
+    [
+      "decision",
+      "reclaim confirmed space · reweight · full_ratio untouched"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "unreachable",
+      "reboot"
+    ],
+    [
+      "ACTIVE",
+      "not paused by QEMU"
+    ],
+    [
+      "green dashboards",
+      "a healthy cluster"
+    ],
+    [
+      "the fastest fix",
+      "the right one (margin)"
+    ],
+    [
+      "server unpause",
+      "possible (Nova still says ACTIVE)"
+    ]
+  ],
+  "path": [
+    "alert",
+    "Nova view",
+    "control plane",
+    "hypervisor",
+    "QEMU log",
+    "records",
+    "cluster",
+    "the reason",
+    "decision · blast radius · rollback",
+    "change step by step",
+    "verify per VM",
+    "RCA"
+  ],
+  "next_check": [
+    "Timeline: every event with its source, in order",
+    "Cause in three layers: immediate · contributing · why it reached production",
+    "Evidence: read-only commands anyone can re-run",
+    "Follow-ups: each with an owner"
+  ],
+  "not_yet": "Never first: reboot · full_ratio · reset-state · virsh resume before the storage is fixed",
+  "footer_left": "One Command, One Investigation · #20 · season finale",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
