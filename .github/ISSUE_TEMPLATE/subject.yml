@@ -1,0 +1,28 @@
+name: Subject suggestion
+description: A command, a symptom or a situation for a future episode, page or incident case
+title: "[subject] "
+labels: ["subject"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - Series episode (one command, one investigation)
+        - Troubleshooting page (one symptom)
+        - Incident case (one situation, one decision)
+        - Error message for errors.md
+    validations:
+      required: true
+  - type: textarea
+    id: situation
+    attributes:
+      label: The production situation
+      description: The symptom as an operator sees it, and the command or decision it leads to. Generic and anonymised, no environment data.
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: The question it should answer
+      description: What does the command tell you, what does it not, or what made the decision hard
