@@ -1,0 +1,39 @@
+{
+  "episode": "09",
+  "problem": "Port ACTIVE, agent alive, security group fine. No traffic. Ask the integration bridge (ML2/OVS).",
+  "command": "ovs-appctl ofproto/trace br-int in_port=<tap>,...",
+  "safety": "READ ONLY",
+  "source_of_truth": "ovsdb-server and ovs-vswitchd on the compute node — what the bridge did, not what was intended.",
+  "diagram": [
+    "tap → (qbr/qvo) → br-int [tag, tables 0·24·25·60·71–94] → patch-tun → br-tun → vxlan-<host>",
+    "~or patch to the provider bridge → NIC"
+  ],
+  "fields": [
+    ["Interface ofport · error", "-1 + error = the plug failed"],
+    ["external_ids iface-id · attached-mac", "written by os-vif; the agent's key"],
+    ["Port tag", "none = unprocessed · 4095 = dead VLAN"],
+    ["Port other_config", "net_uuid, segmentation_id: bridge ↔ API"],
+    ["dump-flows n_packets", "frames arriving, rules programmed?"],
+    ["ofproto/trace result", "output:… / drop in table N"]
+  ],
+  "do_not_assume": [
+    ["ACTIVE", "a tag on the bridge"],
+    ["flow counters", "delivery"],
+    ["output:vxlan", "arrival on the other host"],
+    ["trace", "reality (garbage in, garbage out)"],
+    ["tag 12", "the right network"]
+  ],
+  "path": [
+    "find Interface", "get Port tag", "dump-flows br-int", "ofproto/trace out", "ofproto/trace return",
+    "drop table → SG / spoofing", "tunnel → remote host · MTU"
+  ],
+  "next_check": [
+    "ovs-vsctl get Port <tap> other_config",
+    "ovs-ofctl -O OpenFlow13 dump-ports br-int <tap>",
+    "ovs-ofctl -O OpenFlow13 dump-flows br-tun",
+    "ping -M do -s <size> <remote-tunnel-ip>"
+  ],
+  "not_yet": "Not yet: ovs-vsctl set/del-port · ovs-ofctl add/del-flows · restart ovs-vswitchd · trace -generate",
+  "footer_left": "One Command, One Investigation · #09",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
