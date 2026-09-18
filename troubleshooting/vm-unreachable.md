@@ -137,5 +137,13 @@ With ML2/OVS, testing from the DHCP or router namespace is a precise probe:
 ip netns exec qdhcp-<network-id> ping -c 3 <vm-fixed-ip>
 ```
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#01 `openstack server show`](../series/one-command-one-investigation/01-openstack-server-show.md) · [#04 `virsh list --all`, `virsh domstate --reason`](../series/one-command-one-investigation/04-virsh-list-domstate.md) · [#06 `openstack console log show`](../series/one-command-one-investigation/06-openstack-console-log-show.md) · [#07 `openstack port show`](../series/one-command-one-investigation/07-openstack-port-show.md) · [#08 `openstack network agent list`](../series/one-command-one-investigation/08-openstack-network-agent-list.md) · [#09 `ovs-vsctl`, `ovs-ofctl`, `ofproto/trace`](../series/one-command-one-investigation/09-ovs-vsctl-ofctl.md) · [#10 `ovn-nbctl`, `ovn-sbctl`, `ovn-trace`](../series/one-command-one-investigation/10-ovn-nbctl-sbctl.md) · [#11 `ip netns`: DHCP, router and metadata namespaces](../series/one-command-one-investigation/11-ip-netns.md).
+
+Incident case studies where this page's checks were used under pressure: [Ceph full OSD and CRUSH weights](../incidents/ceph-full-osd-crush-weights.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [Networking](networking.md) · Back to [first commands](vm-first-commands.md)
