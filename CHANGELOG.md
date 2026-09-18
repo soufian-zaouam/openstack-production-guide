@@ -2,7 +2,7 @@
 
 All notable changes to this repository. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are tagged as [releases](https://github.com/soufian-zaouam/openstack-production-guide/releases).
 
-## [1.1] — 2026-09
+## [1.1] — 2026-09-18
 
 ### Added
 
@@ -10,13 +10,14 @@ All notable changes to this repository. The format follows [Keep a Changelog](ht
 - `incidents/`: six anonymised incident case studies in RCA format: evacuation and fencing on shared storage; kernel upgrade and console recovery; RabbitMQ partition and stopping the APIs; patching with limited capacity; CPU pinning, steal time and live migration; Ceph full OSD and CRUSH weights.
 - `errors.md`: index by exact error message, mapping each message to the page that explains it and the first read-only check.
 - `methodology/incident-record-template.md` and `methodology/decision-record-template.md`.
-- `CHANGELOG.md`, `CITATION.cff`, issue templates (erratum, subject).
+- `CHANGELOG.md`, `CITATION.cff`, `.gitignore`, issue templates (erratum, subject).
 
 ### Changed
 
 - `README.md`: rewritten as a map with four entry points (by symptom, by command, by error message, by case); content map; safety labels stated.
 - `troubleshooting/` and `methodology/` pages: a *Go deeper* section on each page pointing to the series episodes and incident cases that use its commands.
 - `CONTRIBUTING.md`: the three rules (verified and cited commands, no environment data, safety label on every command); conventions for episodes and cases.
+- `reference/upstream-documentation.md`: the layers the guide now rests on (libvirt and QEMU, Open vSwitch and OVN, Ceph operations, the host kernel and its tools).
 - The printable PDF moved out of the repository to the release assets; `pdf/` removed.
 
 ## [1.0] — 2026-09-17
