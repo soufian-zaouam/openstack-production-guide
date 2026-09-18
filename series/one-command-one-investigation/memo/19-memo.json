@@ -1,0 +1,78 @@
+{
+  "episode": "19",
+  "problem": "An OpenStack symptom with no OpenStack cause: OOM, lockups, silent services, lost links. Ask the machine.",
+  "command": "dmesg -T | tail -n 200",
+  "safety": "READ ONLY",
+  "source_of_truth": "The kernel, /proc, /sys, the journal and the filesystem tables of an ordinary Linux host.",
+  "diagram": [
+    "nova-compute · libvirt · OVS · os-brick · VMs  →  CPU · memory · disks · NICs · kernel",
+    "~every change to the host is a change to every VM it carries"
+  ],
+  "fields": [
+    [
+      "dmesg -T / journalctl -k",
+      "OOM kill · soft lockup · link down · iscsi · libceph"
+    ],
+    [
+      "systemctl --failed · -p err",
+      "the service that died quietly"
+    ],
+    [
+      "top · mpstat · ps D-state",
+      "%wa, contention, blocked on storage"
+    ],
+    [
+      "free -m · /proc/meminfo",
+      "available, swap, HugePages_Free"
+    ],
+    [
+      "df -h · df -i",
+      "/var/lib/nova/instances · /var/log at 100 %"
+    ],
+    [
+      "ip -s link · ss -s · chronyc",
+      "errors/drops · sockets · time offset"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "clean NIC counters",
+      "a clean path (the switch side)"
+    ],
+    [
+      "dmesg",
+      "yesterday (ring buffer)"
+    ],
+    [
+      "top now",
+      "the host at 03:12 (need sar / monitoring)"
+    ],
+    [
+      "%st on bare metal",
+      "steal (that is inside the guests)"
+    ],
+    [
+      "a full filesystem",
+      "the cause (what grew, and why)"
+    ]
+  ],
+  "path": [
+    "dmesg / journalctl -k at T",
+    "systemctl --failed",
+    "top · mpstat · D-state",
+    "free · hugepages",
+    "df · iostat",
+    "ip -s link · ss",
+    "chronyc · --list-boots",
+    "sar / BMC SEL"
+  ],
+  "next_check": [
+    "journalctl --list-boots  ·  journalctl -b -1 -k | tail -n 100",
+    "sar -u -r -d -n DEV -s <HH:MM> -e <HH:MM>",
+    "ethtool -S <iface> | grep -iE \"err|drop|miss\"",
+    "ipmitool -I lanplus -H <bmc> -U <user> sel elist"
+  ],
+  "not_yet": "Not yet: drop_caches · swapoff · restart OVS/libvirt · ip link down/up · rm to free space",
+  "footer_left": "One Command, One Investigation · #19",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
