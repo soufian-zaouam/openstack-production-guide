@@ -1,0 +1,77 @@
+{
+  "episode": "14",
+  "problem": "Dozens of VMs frozen across hosts. Nova, Cinder, libvirt all \"fine\". Look under the platform.",
+  "command": "ceph -s  ·  ceph health detail",
+  "safety": "READ ONLY",
+  "source_of_truth": "The monitors' view of PGs, OSDs and capacity — the cluster names its own problems.",
+  "diagram": [
+    "VM → QEMU (librbd) → objects on PGs → OSDs",
+    "~PG not active = I/O waits · OSD/pool full = ENOSPC → guest paused · slow OSD = waves"
+  ],
+  "fields": [
+    [
+      "pgs: not active+…",
+      "the size of the outage"
+    ],
+    [
+      "PG_AVAILABILITY · OSD_FULL",
+      "I/O blocked · writes refused"
+    ],
+    [
+      "osd: N up / M in, since",
+      "when it started; out after 600 s"
+    ],
+    [
+      "io: client vs recovery",
+      "waves = recovery competing"
+    ],
+    [
+      "ceph df · osd df tree %USE",
+      "fullest OSD decides, not the average"
+    ],
+    [
+      "osd dump | grep full_ratio",
+      "0.95 · 0.90 · 0.85 by default"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "HEALTH_OK",
+      "this compute reaches the cluster"
+    ],
+    [
+      "HEALTH_WARN",
+      "an outage"
+    ],
+    [
+      "65 % used",
+      "not full (one OSD at 95 % is)"
+    ],
+    [
+      "SLOW_OPS on osd.N",
+      "the cause (disk, host, net)"
+    ],
+    [
+      "one pool",
+      "one service (Glance, Cinder, Nova share it)"
+    ]
+  ],
+  "path": [
+    "ceph -s",
+    "health detail",
+    "pg dump_stuck · osd tree",
+    "ceph df · osd df tree",
+    "osd perf · dump_historic_ops",
+    "rbd status from the compute",
+    "root cause"
+  ],
+  "next_check": [
+    "ceph pg dump_stuck inactive",
+    "ceph osd df tree",
+    "ceph osd dump | grep full_ratio",
+    "rbd -p <pool> status volume-<id>   (from the compute node)"
+  ],
+  "not_yet": "Not yet: set-full-ratio · osd out/down/restart · noout · pg repair · rbd rm",
+  "footer_left": "One Command, One Investigation · #14",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
