@@ -49,5 +49,13 @@ openstack server volume list <vm>          # attached volume UUIDs
 
 When `vm_state` and `power_state` disagree, Nova's record and the hypervisor disagree. Find out which one is right before acting.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#01 `openstack server show`](../series/one-command-one-investigation/01-openstack-server-show.md) · [#04 `virsh list --all`, `virsh domstate --reason`](../series/one-command-one-investigation/04-virsh-list-domstate.md) · [#06 `openstack console log show`](../series/one-command-one-investigation/06-openstack-console-log-show.md).
+
+Incident case studies where this page's checks were used under pressure: [Kernel upgrade: a critical VM no longer boots](../incidents/kernel-upgrade-console-recovery.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [VM ACTIVE but unreachable](vm-unreachable.md) · [VM stuck in BUILD / ERROR](vm-build-error.md)
