@@ -156,11 +156,11 @@ virsh domstate --reason              why is it in that state?
         ↓
 virsh dominfo                        UUID = server id; CPU time moving or not?
         ↓
-  shut off (crashed) ───────────────────→ QEMU log, dmesg                 → #05
-  paused (I/O error) ───────────────────→ volumes, os-brick, backend      → #12–#14
+  shut off (crashed) ───────────────→ QEMU log, dmesg                 → #05
+  paused (I/O error) ───────────────→ volumes, os-brick, backend      → #12–#14
   running, CPU time frozen ─────────→ dumpxml, console log            → #05, #06
   running, CPU time moving ─────────→ console log, port               → #06, #07
-  absent ───────────────────────────────→ migration list, events           → #18
+  absent ──────────────────────────→ migration list, events           → #18
 ```
 
 ## 8. Production lesson
