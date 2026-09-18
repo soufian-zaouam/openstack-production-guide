@@ -1,0 +1,39 @@
+{
+  "episode": "07",
+  "problem": "Guest booted, IP obtained, VM still unreachable. Or: a new VM never got an address. Start at the port.",
+  "command": "openstack port show <port-id>",
+  "safety": "READ ONLY",
+  "source_of_truth": "The Neutron database — binding decided, plug built, status reported.",
+  "diagram": [
+    "Nova → Neutron API / ML2 (binding) → os-vif plug → agent / ovn-controller → status",
+    "~three lives: decided · built · reported"
+  ],
+  "fields": [
+    ["binding_host_id", "must equal the Nova host (#01)"],
+    ["binding_vif_type", "ovs · unbound · binding_failed"],
+    ["binding_vif_details", "ovs_hybrid_plug: qbr/qvo or tap on br-int"],
+    ["status", "ACTIVE / DOWN / BUILD — the host's last report"],
+    ["port_security_enabled · SG ids", "healthy port that drops everything?"],
+    ["fixed_ips · allowed_address_pairs", "compare with ci-info; VIPs"]
+  ],
+  "do_not_assume": [
+    ["ACTIVE", "wired right now"],
+    ["binding_host_id", "where QEMU runs"],
+    ["ACTIVE", "traffic allowed (SG)"],
+    ["fixed_ips", "the guest's address"],
+    ["DOWN", "a network problem (may be control plane)"]
+  ],
+  "path": [
+    "port list --server", "port show", "binding vs Nova host", "security group rules", "network agent list",
+    "bridge on the host (OVS / OVN)", "root cause"
+  ],
+  "next_check": [
+    "openstack security group rule list <sg-id> --long",
+    "openstack network agent list --host <binding_host_id>",
+    "ovs-vsctl find Interface external_ids:iface-id=<port-id>",
+    "openstack server event list <server-id>"
+  ],
+  "not_yet": "Not yet: port set --disable/--enable · --host · --no-security-group · port delete",
+  "footer_left": "One Command, One Investigation · #07",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
