@@ -1,0 +1,43 @@
+name: Render investigation memos
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v1.1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install fonts and Playwright
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-ibm-plex
+          fc-cache -f
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Render the memos from their JSON sources
+        working-directory: series/one-command-one-investigation/memo
+        run: |
+          for j in [0-9][0-9]-memo.json; do
+            python3 render_memo.py "$j" "${j%.json}.png"
+          done
+          rm -f [0-9][0-9]-memo.html
+
+      - name: Commit the PNG files
+        run: |
+          git config user.name "Soufian Zaouam"
+          git config user.email "18644174+soufian-zaouam@users.noreply.github.com"
+          git add series/one-command-one-investigation/memo/*.png
+          git commit -m "series: investigation memos (PNG), rendered from the JSON sources"
+          git push origin HEAD:v1.1
