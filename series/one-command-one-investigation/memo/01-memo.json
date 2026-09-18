@@ -1,0 +1,39 @@
+{
+  "episode": "01",
+  "problem": "VM reported unreachable. Restart requested. Nothing known yet.",
+  "command": "openstack server show <server-id>",
+  "safety": "READ ONLY",
+  "source_of_truth": "Nova database — not the hypervisor.",
+  "diagram": [
+    "CLI → Keystone → Nova API → Nova DB",
+    "~nova-compute / libvirt / QEMU : not consulted"
+  ],
+  "fields": [
+    ["status · vm_state · task_state", "Nova's belief, operation in flight"],
+    ["power_state", "last observed (periodic sync, 600 s by default)"],
+    ["host · instance_name", "where to go next, what to look for"],
+    ["host_status", "UP / UNKNOWN / DOWN / MAINTENANCE (mv 2.16+)"],
+    ["addresses · volumes_attached", "cache and mapping, not reality"],
+    ["updated", "when Nova last touched the record"]
+  ],
+  "do_not_assume": [
+    ["ACTIVE", "the guest works"],
+    ["Running", "running now"],
+    ["host", "where the domain actually is"],
+    ["ERROR", "the VM is down"],
+    ["addresses", "connectivity"]
+  ],
+  "path": [
+    "server show", "compute service list", "virsh list --all", "virsh domstate",
+    "console log", "port show", "volume show", "root cause", "change"
+  ],
+  "next_check": [
+    "openstack compute service list --service nova-compute --host <host>",
+    "openstack server event list <server-id>",
+    "virsh list --all",
+    "virsh domstate --reason <instance_name>"
+  ],
+  "not_yet": "Not yet: server reboot · server set --state",
+  "footer_left": "One Command, One Investigation · #01",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
