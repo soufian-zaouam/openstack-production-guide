@@ -1,0 +1,76 @@
+{
+  "episode": "03",
+  "problem": "\"No valid host was found\" while the dashboard shows free capacity. Where does the scheduler actually look?",
+  "command": "openstack hypervisor show <hostname>",
+  "safety": "READ ONLY",
+  "source_of_truth": "The resource tracker's own record — not what the scheduler uses.",
+  "diagram": [
+    "nova-compute → resource tracker → compute_nodes  (hypervisor show)",
+    "                                → Placement      (the scheduler)"
+  ],
+  "fields": [
+    [
+      "state · status",
+      "the nova-compute service, seen again"
+    ],
+    [
+      "aggregates",
+      "AZ, isolation, per-aggregate ratios"
+    ],
+    [
+      "uptime · load_average",
+      "the only values from the host itself"
+    ],
+    [
+      "disk_available_least",
+      "(≤ 2.87) real free disk, thin images counted"
+    ],
+    [
+      "running_vms",
+      "(≤ 2.87) compare with server list --host"
+    ],
+    [
+      "vcpus_used · memory_mb_used",
+      "(≤ 2.87) no allocation ratio, no reservation"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "free vCPUs",
+      "schedulable capacity"
+    ],
+    [
+      "No valid host",
+      "no capacity"
+    ],
+    [
+      "state up",
+      "a healthy hypervisor"
+    ],
+    [
+      "vcpus_used",
+      "Placement allocations"
+    ],
+    [
+      "numbers",
+      "live (periodic, freezes if down)"
+    ]
+  ],
+  "path": [
+    "hypervisor show",
+    "resource provider inventory",
+    "resource provider usage",
+    "allocation candidate list",
+    "scheduler log (request id)",
+    "root cause"
+  ],
+  "next_check": [
+    "openstack resource provider list --name <hostname>",
+    "openstack resource provider inventory list <rp-uuid>",
+    "openstack resource provider usage show <rp-uuid>",
+    "openstack allocation candidate list --resource VCPU=2 --resource MEMORY_MB=4096"
+  ],
+  "not_yet": "Not yet: placement audit --delete · heal_allocations · allocation ratio changes",
+  "footer_left": "One Command, One Investigation · #03",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
