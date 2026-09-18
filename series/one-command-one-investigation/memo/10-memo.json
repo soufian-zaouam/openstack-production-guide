@@ -1,0 +1,77 @@
+{
+  "episode": "10",
+  "problem": "Port ACTIVE, chassis alive, no traffic — ML2/OVN. Which handover did not happen?",
+  "command": "ovn-sbctl find Port_Binding logical_port=<port-id>",
+  "safety": "READ ONLY",
+  "source_of_truth": "Three stages, three databases: intent (NB), binding (SB), execution (ovn-controller).",
+  "diagram": [
+    "Neutron → NB (intent) → northd → SB (binding) → ovn-controller → br-int (execution)",
+    "~names: neutron-<net> · <port-id> · pg_<sg>"
+  ],
+  "fields": [
+    [
+      "LSP up · enabled",
+      "bound? admin_state_up?"
+    ],
+    [
+      "LSP addresses · port_security",
+      "anti-spoofing: VIP missing?"
+    ],
+    [
+      "options requested-chassis",
+      "the host Neutron asked for"
+    ],
+    [
+      "Port_Binding chassis",
+      "empty = nobody claimed it"
+    ],
+    [
+      "Chassis encaps · nb_cfg",
+      "tunnel IP · how far behind"
+    ],
+    [
+      "acl-list pg_<sg>",
+      "the security group as enforced"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "NB intent",
+      "a bound port"
+    ],
+    [
+      "SB chassis",
+      "flows complete"
+    ],
+    [
+      "trace output",
+      "arrival through the tunnel"
+    ],
+    [
+      "chassis alive",
+      "encap IP reachable"
+    ],
+    [
+      "SB",
+      "the present (northd may be behind)"
+    ]
+  ],
+  "path": [
+    "nbctl list LSP",
+    "acl-list pg_<sg>",
+    "sbctl find Port_Binding",
+    "list Chassis",
+    "ovn-trace",
+    "ofproto/trace on the chassis",
+    "root cause"
+  ],
+  "next_check": [
+    "ovn-nbctl lsp-get-up <port-id>",
+    "ovn-trace --minimal neutron-<net-id> 'inport == \"<port-id>\" && ...'",
+    "ovs-vsctl get Open_vSwitch . external_ids",
+    "ovn-appctl -t ovn-controller connection-status"
+  ],
+  "not_yet": "Not yet: nbctl/sbctl writes · restart ovn-controller · db-sync-util repair",
+  "footer_left": "One Command, One Investigation · #10",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
