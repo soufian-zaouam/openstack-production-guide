@@ -77,5 +77,13 @@ A DOWN port is normal for a stopped instance; one attached to an ACTIVE instance
 > [!WARNING]
 > **Changes state.** `nova-manage db archive_deleted_rows` moves soft-deleted rows to shadow tables, and `nova-manage db purge` deletes them. Useful for long-lived platforms, but take a backup first and run them in a maintenance window.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#17 `SHOW STATUS LIKE 'wsrep_%'`](../series/one-command-one-investigation/17-galera-wsrep-status.md).
+
+Incident case studies where this page's checks were used under pressure: [RabbitMQ partition: stopping the APIs](../incidents/rabbitmq-partition-api-stop.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [Keystone](keystone.md) · Back to [OpenStack services](control-plane-services.md)
