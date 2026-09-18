@@ -1,0 +1,77 @@
+{
+  "episode": "16",
+  "problem": "MessagingTimeout everywhere, every service \"down\", every VM running. Read the bus before touching a node.",
+  "command": "rabbitmqctl list_queues name messages consumers",
+  "safety": "READ ONLY",
+  "source_of_truth": "The broker's own view: membership, alarms, queues, consumers.",
+  "diagram": [
+    "RPC call → <topic> queue → server → reply_<uuid> ← caller waits 60 s (rpc_response_timeout)",
+    "~heartbeats ride the same bus · one alarm on one node blocks every publisher"
+  ],
+  "fields": [
+    [
+      "cluster_status (every node)",
+      "Disk vs Running nodes · Partitions · Alarms"
+    ],
+    [
+      "check_running · alarms · ports",
+      "the three cheapest facts"
+    ],
+    [
+      "consumers = 0",
+      "compute.<host>: off the bus · conductor: nobody listening"
+    ],
+    [
+      "messages",
+      "backlog: slow (consumers) or gone (none)"
+    ],
+    [
+      "messages_unacknowledged",
+      "stuck on conductor = blocked on the DB"
+    ],
+    [
+      "type · quorum_status",
+      "quorum survives a node; classic does not"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "cluster healthy",
+      "control plane healthy (DB behind it)"
+    ],
+    [
+      "queue depth",
+      "the cause"
+    ],
+    [
+      "one node's view",
+      "the cluster's view (partitions)"
+    ],
+    [
+      "ports open",
+      "TLS handshakes succeed"
+    ],
+    [
+      "timeouts",
+      "a bus problem (find the slow callee)"
+    ]
+  ],
+  "path": [
+    "cluster_status on every node",
+    "diagnostics check_*",
+    "list_queues",
+    "consumers = 0 → host / service",
+    "unacked stuck → #17",
+    "alarm → what grew",
+    "partition → a decision"
+  ],
+  "next_check": [
+    "rabbitmq-queues check_if_node_is_quorum_critical",
+    "rabbitmq-diagnostics log_tail -N 200",
+    "rabbitmqctl list_connections peer_host state",
+    "journalctl -u nova-conductor --since \"<T>\" | grep -E \"MessagingTimeout|AMQP\""
+  ],
+  "not_yet": "Not yet: restart rabbitmq · stop_app · forget_cluster_node · force_boot · purge_queue",
+  "footer_left": "One Command, One Investigation · #16",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
