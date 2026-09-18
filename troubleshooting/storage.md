@@ -61,5 +61,13 @@ Cinder volumes on RBD are usually named `volume-<uuid>`. Nova ephemeral disks on
 > [!WARNING]
 > **Changes state.** Flushing multipath maps or logging out of iSCSI sessions on a compute node affects every instance using those paths on that host.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#12 `openstack volume show`, `volume attachment list`](../series/one-command-one-investigation/12-openstack-volume-show.md) · [#13 `virsh domblklist`, `multipath -ll`, `iscsiadm`, `rbd status`](../series/one-command-one-investigation/13-os-brick-block-devices.md) · [#14 `ceph -s`, `ceph health detail`, `ceph df`](../series/one-command-one-investigation/14-ceph-status.md).
+
+Incident case studies where this page's checks were used under pressure: [Ceph full OSD and CRUSH weights](../incidents/ceph-full-osd-crush-weights.md) · [Evacuation and fencing on shared storage](../incidents/evacuation-fencing-shared-storage.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [OpenStack services](control-plane-services.md) · Back to [Compute](compute.md)
