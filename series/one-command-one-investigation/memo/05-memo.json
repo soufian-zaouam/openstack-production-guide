@@ -1,0 +1,39 @@
+{
+  "episode": "05",
+  "problem": "Domain shut off (crashed), or running with frozen CPU time. What was QEMU asked to run, and what did it say?",
+  "command": "virsh dumpxml <instance_name>",
+  "safety": "READ ONLY",
+  "source_of_truth": "The domain definition, QEMU's own log, and the process — none of them a database.",
+  "diagram": [
+    "nova-compute → domain XML → libvirt → qemu-kvm (pid) → KVM",
+    "~/var/log/libvirt/qemu/<instance_name>.log : starts, stops, reasons"
+  ],
+  "fields": [
+    ["<uuid> · <metadata nova:*>", "server id, flavor, owner, ports"],
+    ["<cputune> · <memoryBacking>", "pinning in force, hugepages"],
+    ["<disk> source · <serial>", "rbd / block / file, Cinder volume id"],
+    ["<interface> target dev", "the tap name for OVS / OVN"],
+    ["shutting down, reason=", "destroyed · shutdown · crashed · migrated"],
+    ["terminating on signal 15", "libvirt asked — not a crash"]
+  ],
+  "do_not_assume": [
+    ["signal 15", "QEMU crashed"],
+    ["XML", "what the guest is doing"],
+    ["tap in XML", "traffic flows"],
+    ["silent log", "healthy guest"],
+    ["XML now", "XML at boot (Nova regenerates it)"]
+  ],
+  "path": [
+    "dumpxml", "QEMU log", "pgrep / ps (etimes, D state)", "dmesg -T", "server event list at T",
+    "disks · tap · guest · host branches"
+  ],
+  "next_check": [
+    "tail -n 100 /var/log/libvirt/qemu/<instance_name>.log",
+    "pgrep -af \"guest=<instance_name>\"",
+    "dmesg -T | grep -iE \"out of memory|killed process\"",
+    "openstack server event list <server-id>"
+  ],
+  "not_yet": "Not yet: virsh edit · kill · virsh destroy · qemu-monitor-command · reboot --hard",
+  "footer_left": "One Command, One Investigation · #05",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
