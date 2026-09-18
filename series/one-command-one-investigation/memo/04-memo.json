@@ -1,0 +1,39 @@
+{
+  "episode": "04",
+  "problem": "Nova says ACTIVE, Running, service up. The VM does not answer. Time to ask libvirt.",
+  "command": "virsh list --all",
+  "safety": "READ ONLY",
+  "source_of_truth": "The libvirt daemon on the compute node — not the Nova database.",
+  "diagram": [
+    "virsh → libvirtd / virtqemud → qemu-kvm process → KVM",
+    "~Nova DB : not consulted · if virsh hangs, that is evidence"
+  ],
+  "fields": [
+    ["Id · Name · State", "does the domain exist here, in which state?"],
+    ["domstate --reason", "paused (I/O error) · shut off (crashed) · migrating"],
+    ["dominfo UUID", "= the Nova server id"],
+    ["dominfo CPU time", "run twice: frozen guest if it does not move"],
+    ["Persistent: yes", "Nova defines domains; shut off still listed"],
+    ["absent from --all", "undefined here: migration, evacuation, rebuild"]
+  ],
+  "do_not_assume": [
+    ["running", "the guest is alive"],
+    ["shut off", "Nova knows"],
+    ["absent", "deleted"],
+    ["paused", "someone paused it"],
+    ["libvirt view", "Nova view"]
+  ],
+  "path": [
+    "virsh list --all", "domstate --reason", "dominfo (CPU time)", "dumpxml", "QEMU log · dmesg",
+    "migration list · events", "root cause"
+  ],
+  "next_check": [
+    "virsh domstate --reason <instance_name>",
+    "virsh dominfo <instance_name>",
+    "virsh dumpxml <instance_name>",
+    "openstack server migration list --server <server-id>"
+  ],
+  "not_yet": "Not yet: virsh resume · start · destroy · undefine · server reboot --hard",
+  "footer_left": "One Command, One Investigation · #04",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
