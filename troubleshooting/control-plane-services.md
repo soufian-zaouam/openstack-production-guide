@@ -83,5 +83,13 @@ This makes "stop accepting new requests, protect what is running" a credible opt
 > [!WARNING]
 > **Changes state.** Stopping the APIs, withdrawing them from the load balancer, or restarting shared components are disruptive decisions. They need an owner, a communication to users, and explicit conditions for reopening. Stopping the control plane should mean the APIs, the message bus and the databases, not the agents running on compute nodes. Verify how your networking backend behaves before relying on this in an incident.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#02 `openstack compute service list`](../series/one-command-one-investigation/02-openstack-compute-service-list.md) · [#08 `openstack network agent list`](../series/one-command-one-investigation/08-openstack-network-agent-list.md) · [#16 `rabbitmqctl cluster_status`, `list_queues`, `rabbitmq-diagnostics`](../series/one-command-one-investigation/16-rabbitmq-cluster-status.md) · [#17 `SHOW STATUS LIKE 'wsrep_%'`](../series/one-command-one-investigation/17-galera-wsrep-status.md) · [#18 request IDs and log correlation](../series/one-command-one-investigation/18-request-id-log-correlation.md).
+
+Incident case studies where this page's checks were used under pressure: [RabbitMQ partition: stopping the APIs](../incidents/rabbitmq-partition-api-stop.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [RabbitMQ](rabbitmq.md) · [MariaDB / Galera](mariadb-galera.md) · [Keystone](keystone.md)

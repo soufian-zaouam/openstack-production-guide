@@ -139,5 +139,13 @@ Nova requires the compute service to be reported down. What Nova cannot know is 
 >
 > Any automation that evacuates on a lost heartbeat must fence first.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#02 `openstack compute service list`](../series/one-command-one-investigation/02-openstack-compute-service-list.md) · [#03 `openstack hypervisor show`](../series/one-command-one-investigation/03-openstack-hypervisor-show.md) · [#04 `virsh list --all`, `virsh domstate --reason`](../series/one-command-one-investigation/04-virsh-list-domstate.md) · [#05 `virsh dumpxml` and the QEMU log](../series/one-command-one-investigation/05-virsh-dumpxml-qemu-log.md) · [#19 the compute node as a machine](../series/one-command-one-investigation/19-compute-host-as-a-machine.md).
+
+Incident case studies where this page's checks were used under pressure: [Evacuation and fencing on shared storage](../incidents/evacuation-fencing-shared-storage.md) · [CPU pinning, steal time and live migration](../incidents/cpu-pinning-steal-time-live-migration.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [Networking](networking.md) · [Storage](storage.md)

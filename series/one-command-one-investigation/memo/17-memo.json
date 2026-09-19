@@ -1,0 +1,77 @@
+{
+  "episode": "17",
+  "problem": "API 500/504 in waves, \"WSREP has not yet prepared node\", conductor blocked. Which node, in what state?",
+  "command": "SHOW STATUS LIKE 'wsrep_%'   (on every node)",
+  "safety": "READ ONLY",
+  "source_of_truth": "Each node's own opinion of the cluster — compare the three before believing any.",
+  "diagram": [
+    "APIs → HAProxy / ProxySQL → node 1 ── Galera (wsrep) ── node 2 ── node 3",
+    "~quorum: > half the nodes = Primary · flow control: the slowest node paces everyone"
+  ],
+  "fields": [
+    [
+      "wsrep_cluster_status",
+      "Primary · non-Primary (refuses) · Disconnected"
+    ],
+    [
+      "cluster_size · state_uuid",
+      "sizes differ = partition · two uuids = split brain"
+    ],
+    [
+      "local_state_comment",
+      "Synced · Donor/Desynced · Joining"
+    ],
+    [
+      "flow_control · recv_queue",
+      "the slow node pacing the cluster"
+    ],
+    [
+      "last_committed (per node)",
+      "lag, directly"
+    ],
+    [
+      "cert_failures · bf_aborts",
+      "\"deadlocks\" = writes on several nodes"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "Primary here",
+      "the API's node is Primary (ask the LB)"
+    ],
+    [
+      "Synced",
+      "fast"
+    ],
+    [
+      "Deadlock found",
+      "a deadlock (certification conflict)"
+    ],
+    [
+      "_paused (lifetime)",
+      "this morning's spike"
+    ],
+    [
+      "quorum healthy",
+      "OpenStack rows consistent"
+    ]
+  ],
+  "path": [
+    "wsrep_% on every node",
+    "cluster_status · size · uuid",
+    "local_state_comment",
+    "flow control · lag",
+    "SHOW PROCESSLIST",
+    "LB backend status",
+    "grastate.dat before any bootstrap"
+  ],
+  "next_check": [
+    "SHOW PROCESSLIST",
+    "SHOW GLOBAL VARIABLES LIKE 'wsrep_sst_method'",
+    "cat /var/lib/mysql/grastate.dat   (every node)",
+    "echo \"show stat\" | socat stdio /var/run/haproxy.sock | grep -i mysql"
+  ],
+  "not_yet": "Not yet: galera_new_cluster · pc.bootstrap=YES · restart mariadb · KILL <id> · SQL fixes",
+  "footer_left": "One Command, One Investigation · #17",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}

@@ -1,0 +1,39 @@
+{
+  "episode": "12",
+  "problem": "Guest cannot see its disk, or a volume is stuck detaching while the VM still writes. Four witnesses, two databases first.",
+  "command": "openstack volume show <volume-id>",
+  "safety": "READ ONLY",
+  "source_of_truth": "Cinder's and Nova's records — the last step that wrote, not the disk.",
+  "diagram": [
+    "reserve → connector → export → connect (os-brick) → libvirt → complete → BDM",
+    "~witnesses: Nova · Cinder · the host · the guest"
+  ],
+  "fields": [
+    ["status", "in-use · reserved · attaching · detaching · error"],
+    ["attachments host_name", "must equal the Nova host"],
+    ["os-vol-host-attr:host", "host@backend#pool — which service, which backend"],
+    ["attachment status · connection_info", "reserved without connection_info = never exported"],
+    ["server volume list", "Nova's BDM: device, attachment id"],
+    ["updated_at", "where to open cinder-volume and nova-compute logs"]
+  ],
+  "do_not_assume": [
+    ["in-use", "the device exists on the host"],
+    ["device /dev/vdb", "the guest's name"],
+    ["Nova and Cinder agree", "the disk is fine"],
+    ["detaching", "still in progress"],
+    ["--state available", "a fix"]
+  ],
+  "path": [
+    "server volume list", "volume show", "attachment show", "host_name vs Nova host", "volume service list",
+    "events at updated_at", "the host (domblklist, lsblk)"
+  ],
+  "next_check": [
+    "openstack volume attachment list --volume-id <volume-id>",
+    "openstack volume service list",
+    "openstack server event list <server-id>",
+    "virsh domblklist <instance_name>"
+  ],
+  "not_yet": "Not yet: volume set --state · attachment delete · remove/add volume · DB edits",
+  "footer_left": "One Command, One Investigation · #12",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}

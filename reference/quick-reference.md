@@ -4,6 +4,8 @@ Read-only commands, grouped by the question they answer. `[cp]` runs from the co
 
 ## Scope
 
+For what each command can and cannot establish, one command at a time, see the series [One Command, One Investigation](../series/one-command-one-investigation/README.md); for an exact error message, [errors.md](../errors.md).
+
 | Question | Command |
 | --- | --- |
 | What else runs on this host? | `[cp] openstack server list --all-projects --host <compute>` |

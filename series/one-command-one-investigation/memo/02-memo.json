@@ -1,0 +1,39 @@
+{
+  "episode": "02",
+  "problem": "host_status UNKNOWN. Several VMs on the same host unreachable. Is the host dead, or just silent?",
+  "command": "openstack compute service list --host <host>",
+  "safety": "READ ONLY",
+  "source_of_truth": "The services table — the last heartbeat that reached the database.",
+  "diagram": [
+    "nova-compute → RabbitMQ → nova-conductor → DB ← nova-api",
+    "~heartbeat every 10 s · down after 60 s without one"
+  ],
+  "fields": [
+    ["Status", "enabled / disabled — a decision"],
+    ["State", "up / down — a computation"],
+    ["Updated At", "the moment the host went silent"],
+    ["Disabled Reason", "why someone took it out"],
+    ["Forced Down", "someone claims it is fenced (mv 2.11+)"],
+    ["all services (no filter)", "one host down, or the whole path?"]
+  ],
+  "do_not_assume": [
+    ["down", "the host is dead"],
+    ["down", "the VMs are down"],
+    ["up", "libvirt and storage work"],
+    ["all down", "all hosts died"],
+    ["disabled", "broken"]
+  ],
+  "path": [
+    "compute service list", "Updated At = T", "out-of-band power state", "nova-compute journal at T",
+    "RabbitMQ connection", "hypervisor show", "virsh list --all"
+  ],
+  "next_check": [
+    "openstack compute service list",
+    "ipmitool -I lanplus -H <bmc> -U <user> power status",
+    "journalctl -u nova-compute --since \"<T - 10 min>\"",
+    "ss -tnp | grep -E ':5671|:5672'"
+  ],
+  "not_yet": "Not yet: compute service set --down · server evacuate · restart nova-compute",
+  "footer_left": "One Command, One Investigation · #02",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}

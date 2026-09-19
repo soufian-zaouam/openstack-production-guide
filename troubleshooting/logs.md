@@ -60,5 +60,11 @@ Enabling `debug = True` helps, but it changes configuration, may require a resta
 > [!WARNING]
 > **Changes state.** Treat debug logging as a change: scope it to one service or one host, limit it in time, and revert it.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#18 request IDs and log correlation](../series/one-command-one-investigation/18-request-id-log-correlation.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Back to: [Troubleshooting index](README.md)

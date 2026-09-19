@@ -75,5 +75,11 @@ Evidence: commands, logs, request IDs, change records
 
 The purpose is to improve the system, not to find a culprit. Decisions made during an incident should be judged against what was known at the time, not against what is known afterwards.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#18 request IDs and log correlation](../series/one-command-one-investigation/18-request-id-log-correlation.md) · [#20 the complete investigation](../series/one-command-one-investigation/20-complete-investigation.md).
+
+Incident case studies where this page's checks were used under pressure: [Ceph full OSD and CRUSH weights](../incidents/ceph-full-osd-crush-weights.md) · [RabbitMQ partition: stopping the APIs](../incidents/rabbitmq-partition-api-stop.md).
+
 ---
 Next: [Before you escalate](escalation-checklist.md)

@@ -99,5 +99,11 @@ ovs-vsctl get Open_vSwitch . external_ids        # ovn-remote, system-id, encaps
 > [!WARNING]
 > **Changes state.** Restarting the Open vSwitch agent, `ovn-controller` or `openvswitch` on a compute node can interrupt traffic for every instance on that host, depending on version and configuration. It is a data-plane action, not a control-plane one. Plan it like a maintenance.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#07 `openstack port show`](../series/one-command-one-investigation/07-openstack-port-show.md) · [#08 `openstack network agent list`](../series/one-command-one-investigation/08-openstack-network-agent-list.md) · [#09 `ovs-vsctl`, `ovs-ofctl`, `ofproto/trace`](../series/one-command-one-investigation/09-ovs-vsctl-ofctl.md) · [#10 `ovn-nbctl`, `ovn-sbctl`, `ovn-trace`](../series/one-command-one-investigation/10-ovn-nbctl-sbctl.md) · [#11 `ip netns`: DHCP, router and metadata namespaces](../series/one-command-one-investigation/11-ip-netns.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [Storage](storage.md) · Back to [VM unreachable](vm-unreachable.md)

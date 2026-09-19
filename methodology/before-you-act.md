@@ -70,5 +70,9 @@ For disruptive actions (stopping APIs, restarting a shared component, evacuating
 
 If the only way to get the evidence you need is to change production, you have reached a decision point, not a diagnostic step.
 
+## Go deeper
+
+Incident case studies where this page's checks were used under pressure: [RabbitMQ partition: stopping the APIs](../incidents/rabbitmq-partition-api-stop.md) · [Evacuation and fencing on shared storage](../incidents/evacuation-fencing-shared-storage.md).
+
 ---
 Next: [VM troubleshooting: first commands](../troubleshooting/vm-first-commands.md) · [Changes and rollback](changes-and-rollback.md)

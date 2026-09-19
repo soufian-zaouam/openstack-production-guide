@@ -1,0 +1,77 @@
+{
+  "episode": "11",
+  "problem": "No address from DHCP, or metadata unreachable. Port and bridge are fine. Find the process that should answer.",
+  "command": "ip netns exec qdhcp-<net-id> ss -lnup",
+  "safety": "READ ONLY",
+  "source_of_truth": "Ordinary Linux processes in ordinary namespaces on some host.",
+  "diagram": [
+    "OVS: qdhcp-<net> dnsmasq:67 · qrouter-<router> haproxy:9697 + NAT · DVR: snat- · fip-",
+    "~OVN: ovnmeta-<net> haproxy:80 only — DHCP and routing live in the flows"
+  ],
+  "fields": [
+    [
+      "ip netns list",
+      "does the namespace exist on this host?"
+    ],
+    [
+      "ip -n <ns> addr · route",
+      "ns-* / qr-* / qg-*, floating /32s"
+    ],
+    [
+      "ss -lnup / -lntp",
+      "dnsmasq on 67 · haproxy on 9697 / 80"
+    ],
+    [
+      ".../dhcp/<net>/host",
+      "reservations: is the VM's MAC there?"
+    ],
+    [
+      ".../dhcp/<net>/leases · opts",
+      "what was offered · router, dns, mtu"
+    ],
+    [
+      "iptables -t nat -S",
+      "REDIRECT 9697 · DNAT per floating IP"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "dnsmasq listening",
+      "DHCPDISCOVER arrives"
+    ],
+    [
+      "lease present",
+      "the guest accepted it"
+    ],
+    [
+      "curl OK (router)",
+      "the guest can reach it"
+    ],
+    [
+      "namespace present",
+      "on the right host (DVR)"
+    ],
+    [
+      "no dnsmasq (OVN)",
+      "DHCP is broken"
+    ]
+  ],
+  "path": [
+    "agent list --network",
+    "ip netns list",
+    "addr · route",
+    "ss listeners",
+    "host · leases · opts",
+    "ping · curl from the namespace",
+    "agent log"
+  ],
+  "next_check": [
+    "grep -i <mac> /var/lib/neutron/dhcp/<net-id>/host",
+    "ip netns exec qrouter-<id> iptables -t nat -S",
+    "ip netns exec qrouter-<id> curl -sI http://169.254.169.254/openstack",
+    "journalctl -u neutron-dhcp-agent --since \"<port updated_at>\""
+  ],
+  "not_yet": "Not yet: netns delete · kill dnsmasq/haproxy · iptables -F · move networks/routers",
+  "footer_left": "One Command, One Investigation · #11",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}

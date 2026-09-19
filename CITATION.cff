@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use or adapt this guide, please cite it as below."
+type: dataset
+title: "OpenStack Production Guide: how to operate and troubleshoot OpenStack in production"
+authors:
+  - family-names: Zaouam
+    given-names: Soufian
+version: "1.1"
+date-released: 2026-09-18
+license: CC-BY-SA-4.0
+repository-code: "https://github.com/soufian-zaouam/openstack-production-guide"
+abstract: "Investigation paths by symptom and by command, an index by exact error message, anonymised incident case studies in RCA format, and the methodology for changing a production OpenStack platform. Companion to the book OpenStack, the Day After Tomorrow."
+keywords:
+  - OpenStack
+  - troubleshooting
+  - Day-2 operations
+  - incident investigation
+  - root cause analysis
+  - SRE
+references:
+  - type: book
+    title: "OpenStack, the Day After Tomorrow: Operating Mission-Critical OpenStack Platforms"
+    authors:
+      - family-names: Zaouam
+        given-names: Soufian
+    url: "https://github.com/soufian-zaouam/openstack-the-day-after-tomorrow"

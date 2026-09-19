@@ -71,5 +71,13 @@ Take the request ID from `server event list` and follow it through `nova-api`, `
 > [!WARNING]
 > **Changes state.** `openstack server set --state <active|error> <vm>` rewrites the record, not the reality. It does not free resources, unbind ports or detach volumes. Use it only once you know what the hypervisor, Neutron and Cinder actually hold, and prefer deleting and recreating a VM that never finished building.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#03 `openstack hypervisor show`](../series/one-command-one-investigation/03-openstack-hypervisor-show.md) · [#15 Placement allocations and `nova-manage placement audit`](../series/one-command-one-investigation/15-placement-allocations.md) · [#07 `openstack port show`](../series/one-command-one-investigation/07-openstack-port-show.md) · [#08 `openstack network agent list`](../series/one-command-one-investigation/08-openstack-network-agent-list.md) · [#18 request IDs and log correlation](../series/one-command-one-investigation/18-request-id-log-correlation.md).
+
+Incident case studies where this page's checks were used under pressure: [RabbitMQ partition: stopping the APIs](../incidents/rabbitmq-partition-api-stop.md).
+
+Looking for an exact error message? See the [index by error message](../errors.md).
+
 ---
 Next: [Compute](compute.md) · Back to [first commands](vm-first-commands.md)

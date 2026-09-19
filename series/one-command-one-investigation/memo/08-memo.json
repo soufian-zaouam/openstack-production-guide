@@ -1,0 +1,39 @@
+{
+  "episode": "08",
+  "problem": "Port DOWN, binding_failed, slow DHCP — all on one host. What runs there for Neutron, and does it work?",
+  "command": "openstack network agent list --host <host>",
+  "safety": "READ ONLY",
+  "source_of_truth": "Heartbeats (ML2/OVS) or chassis acknowledgements (ML2/OVN) — reports, not packets.",
+  "diagram": [
+    "OVS: agent → RabbitMQ → neutron-server → heartbeat_timestamp (down after 75 s)",
+    "OVN: ovn-controller → SB Chassis_Private.nb_cfg ← neutron-server"
+  ],
+  "fields": [
+    ["Alive · State", "a computation · a decision"],
+    ["heartbeat_timestamp", "the moment it went silent"],
+    ["started_at", "a restart nobody mentioned?"],
+    ["configurations.bridge_mappings", "explains binding_failed"],
+    ["configurations.devices", "compare with ports bound to the host"],
+    ["--network / --router", "which agent hosts this network / router"]
+  ],
+  "do_not_assume": [
+    ["alive", "flows intact"],
+    ["all XXX", "all hosts broken (report path)"],
+    ["UP", "alive"],
+    ["DHCP agent alive", "a lease exists"],
+    ["OVN chassis alive", "tunnels work"]
+  ],
+  "path": [
+    "network agent list --host", "network agent show", "heartbeat · started_at · mappings", "agent journal at T",
+    "bridge (OVS / OVN)", "namespaces", "root cause"
+  ],
+  "next_check": [
+    "openstack network agent show <agent-id>",
+    "journalctl -u neutron-openvswitch-agent --since \"<T - 10 min>\"",
+    "ovs-vsctl get Open_vSwitch . external_ids",
+    "ovn-sbctl list Chassis_Private <chassis>"
+  ],
+  "not_yet": "Not yet: restart the OVS agent · agent set --disable · agent delete · move routers",
+  "footer_left": "One Command, One Investigation · #08",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}

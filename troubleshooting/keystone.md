@@ -71,5 +71,9 @@ Recent releases moved to new default RBAC policies (project reader, member and m
 
 An expired certificate on the identity endpoint breaks every client and every service at once. Keep expiry dates visible and rotation rehearsed.
 
+## Go deeper
+
+Keystone is a reserve subject for season 2 of [One Command, One Investigation](../series/one-command-one-investigation/README.md) (`openstack token issue`, `openstack endpoint list`: the 401s and 503s that are not what they look like). For the exact messages, see the [index by error message](../errors.md#keystone).
+
 ---
 Next: [Logs](logs.md) · Back to [OpenStack services](control-plane-services.md)

@@ -49,5 +49,9 @@ journalctl -u <nova-compute unit> --since "<start time>"   # unit name and log l
 - A way to transfer the decision without the evidence.
 - A reason to stop collecting information: keep the timeline running while you wait.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#18 request IDs and log correlation](../series/one-command-one-investigation/18-request-id-log-correlation.md).
+
 ---
 Back to: [Production troubleshooting principles](production-troubleshooting.md)

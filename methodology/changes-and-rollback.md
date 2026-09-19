@@ -87,5 +87,9 @@ Follow-up (document, measure, simplify, revisit):
 
 The rejected options are as valuable as the selected one: they prevent the next team from reopening the same question without the same information.
 
+## Go deeper
+
+Incident case studies where this page's checks were used under pressure: [Patching with limited capacity](../incidents/patching-campaign-limited-capacity.md) · [CPU pinning, steal time and live migration](../incidents/cpu-pinning-steal-time-live-migration.md) · [Ceph full OSD and CRUSH weights](../incidents/ceph-full-osd-crush-weights.md).
+
 ---
 Next: [Root cause analysis](root-cause-analysis.md)

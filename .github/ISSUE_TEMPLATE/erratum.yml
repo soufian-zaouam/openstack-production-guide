@@ -1,0 +1,40 @@
+name: Erratum
+description: A command, a fact or a version note that is wrong or outdated
+title: "[erratum] "
+labels: ["erratum"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: Path of the file, and the section or line
+      placeholder: series/one-command-one-investigation/04-virsh-list-domstate.md, section 3
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: Quote the sentence or command as it appears
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What is correct
+      description: The corrected command or statement
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Official documentation, release note or source code showing the correct behaviour
+      placeholder: https://docs.openstack.org/...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Release and backend where you observed it
+      placeholder: "2025.1 (Epoxy), libvirt 10.x, ML2/OVN, Ceph Reef"

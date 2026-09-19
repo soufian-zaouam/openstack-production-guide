@@ -16,4 +16,6 @@ Start with the symptom, follow its page in order, and stop where the evidence ch
 | 401, 403, authentication failures | [Keystone](keystone.md) |
 | You need to prove what happened | [Logs and correlation](logs.md) |
 
-Before any change, read [Before you act](../methodology/before-you-act.md) and [Changes and rollback](../methodology/changes-and-rollback.md).
+Two other ways in: by **command**, with the series [One Command, One Investigation](../series/one-command-one-investigation/README.md) (what `openstack server show`, `virsh domstate --reason`, `ceph -s` or `rabbitmqctl cluster_status` tell you, and what they do not); and by **exact error message**, with the [index by error message](../errors.md).
+
+Before any change, read [Before you act](../methodology/before-you-act.md) and [Changes and rollback](../methodology/changes-and-rollback.md). To see the same checks used under pressure, with the decision and its alternatives, read the [incident case studies](../incidents/README.md).

@@ -78,5 +78,11 @@ Restoring service and understanding the failure are different activities, often 
 - **What do I not know?** Hypotheses and assumptions, stated as such. Uncertainty is a risk signal, not a weakness to hide.
 - **What evidence do I need?** The smallest safe observation that would change the decision. If it can only be obtained by changing production, you have reached a decision point, not a diagnostic step.
 
+## Go deeper
+
+Episodes of [One Command, One Investigation](../series/one-command-one-investigation/README.md) on the commands of this page: [#20 the complete investigation](../series/one-command-one-investigation/20-complete-investigation.md).
+
+Incident case studies where this page's checks were used under pressure: [CPU pinning, steal time and live migration](../incidents/cpu-pinning-steal-time-live-migration.md).
+
 ---
 Next: [Before you act](before-you-act.md)

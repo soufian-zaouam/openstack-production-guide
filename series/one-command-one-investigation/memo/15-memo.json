@@ -1,0 +1,78 @@
+{
+  "episode": "15",
+  "problem": "No valid host with room to spare. A dead host that cannot be deleted. VMs counted twice. One ledger.",
+  "command": "openstack resource provider show --allocations <rp>",
+  "safety": "READ ONLY",
+  "source_of_truth": "Placement — the scheduler's ledger of claims, not of running processes.",
+  "diagram": [
+    "scheduler ← candidates = (inventory − reserved) × ratio − allocations (instances · migrations)",
+    "~COMPUTE_STATUS_DISABLED excludes the host · inventory rewritten every minute"
+  ],
+  "fields": [
+    [
+      "usage show, per class",
+      "which class hits zero first"
+    ],
+    [
+      "show --allocations",
+      "consumers holding this provider"
+    ],
+    [
+      "server list --host",
+      "which of them actually run here"
+    ],
+    [
+      "allocation show <consumer>",
+      "two providers = evacuation leftover"
+    ],
+    [
+      "migration UUID as consumer",
+      "source side of a move; stale if the move ended"
+    ],
+    [
+      "trait list",
+      "COMPUTE_STATUS_DISABLED still set?"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "allocation",
+      "a running process"
+    ],
+    [
+      "consumer UUID",
+      "an instance (may be a migration)"
+    ],
+    [
+      "usage headroom",
+      "candidates (traits, aggregates)"
+    ],
+    [
+      "audit output",
+      "safe to delete in one pass"
+    ],
+    [
+      "numbers",
+      "stable during a wave of moves"
+    ]
+  ],
+  "path": [
+    "usage show",
+    "show --allocations",
+    "server list --host",
+    "allocation show",
+    "placement audit --verbose",
+    "trait list",
+    "migration list · events (#18)",
+    "repair one consumer at a time"
+  ],
+  "next_check": [
+    "openstack resource provider usage show <rp-uuid>",
+    "openstack resource provider allocation show <consumer-uuid>",
+    "nova-manage placement audit --verbose --resource_provider <rp-uuid>",
+    "openstack server migration list --server <consumer-uuid>"
+  ],
+  "not_yet": "Not yet: audit --delete · allocation delete/unset · heal_allocations without --dry-run",
+  "footer_left": "One Command, One Investigation · #15",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}

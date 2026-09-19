@@ -1,0 +1,76 @@
+{
+  "episode": "13",
+  "problem": "Volume in-use and attached, guest sees I/O errors or no disk. Read the device, not the record.",
+  "command": "multipath -ll  ·  rbd -p <pool> status volume-<id>",
+  "safety": "READ ONLY",
+  "source_of_truth": "The path, the session, or the watcher on the compute node — the only party that cannot be stale.",
+  "diagram": [
+    "iSCSI/FC: session → /dev/sdX per path → multipath → /dev/mapper/<wwid> → QEMU",
+    "~RBD: no host device — QEMU opens the image with librbd; rbd status shows the watcher"
+  ],
+  "fields": [
+    [
+      "virsh domblklist · domblkerror",
+      "in the domain? errors reported by QEMU?"
+    ],
+    [
+      "multipath -ll path states",
+      "active ready running · failed faulty"
+    ],
+    [
+      "iscsiadm -P 3 session state",
+      "LOGGED IN · attached sdX · State: running"
+    ],
+    [
+      "lsblk SERIAL",
+      "= the LUN id in connection_info"
+    ],
+    [
+      "rbd status watchers",
+      "which host holds the image open"
+    ],
+    [
+      "dmesg -T",
+      "when the host saw the path or session go"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "LOGGED IN",
+      "the LUN is mapped"
+    ],
+    [
+      "watcher",
+      "I/O succeeds"
+    ],
+    [
+      "no lsblk entry (RBD)",
+      "a problem"
+    ],
+    [
+      "one VM",
+      "the scope (sessions are host-wide)"
+    ],
+    [
+      "failed path",
+      "a host problem (SAN side)"
+    ]
+  ],
+  "path": [
+    "domblklist / domblkerror",
+    "driver_volume_type",
+    "multipath · iscsiadm  |  rbd status · info",
+    "dmesg -T",
+    "SAN side  |  ceph -s",
+    "reconcile with #12"
+  ],
+  "next_check": [
+    "virsh domblkerror <instance_name>",
+    "iscsiadm -m session -P 3",
+    "dmesg -T | grep -iE \"iscsi|multipath|sd[a-z]|rbd|libceph\"",
+    "ceph -s  ·  ceph health detail"
+  ],
+  "not_yet": "Not yet: iscsiadm logout/login · multipath -F · rbd lock remove · detach-disk",
+  "footer_left": "One Command, One Investigation · #13",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}

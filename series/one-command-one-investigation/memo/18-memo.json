@@ -1,0 +1,78 @@
+{
+  "episode": "18",
+  "problem": "\"Something happened to this VM at T.\" One operation, six services, four hosts. Follow the request, not the logs.",
+  "command": "openstack server event show <server-id> <req-id>",
+  "safety": "READ ONLY",
+  "source_of_truth": "Nova's instance actions, then the same request ID in every service log, in time order.",
+  "diagram": [
+    "client → nova-api [req-<id>] → conductor → scheduler → compute → neutron / cinder [global id]",
+    "~log format: [global_request_id request_id user project] instance-uuid message"
+  ],
+  "fields": [
+    [
+      "event list",
+      "every API action, request id, start, Error?"
+    ],
+    [
+      "event show: events",
+      "steps, host per step, result, traceback"
+    ],
+    [
+      "start / finish times",
+      "the window to open the logs on"
+    ],
+    [
+      "grep req-<id> per host",
+      "the same request, in order, across services"
+    ],
+    [
+      "%(instance)s prefix",
+      "second join key when no request id"
+    ],
+    [
+      "chronyc tracking",
+      "trust the timeline only after this"
+    ]
+  ],
+  "do_not_assume": [
+    [
+      "nothing in event list",
+      "nothing happened (outside Nova)"
+    ],
+    [
+      "a retry",
+      "the same request id"
+    ],
+    [
+      "stop by service user",
+      "a human"
+    ],
+    [
+      "traceback",
+      "the reason (libvirt / QEMU logs)"
+    ],
+    [
+      "timestamps",
+      "in sync across hosts"
+    ]
+  ],
+  "path": [
+    "event list",
+    "event show",
+    "window · hosts · req id",
+    "grep per host, sorted",
+    "join by port / volume id",
+    "failed step → its layer",
+    "silent list → the host (#19)",
+    "written timeline (#20)"
+  ],
+  "next_check": [
+    "openstack server event list <server-id>",
+    "journalctl -u nova-compute --since \"<start>\" --until \"<finish>\" | grep req-<id>",
+    "grep -h \"<port-id>\\|<volume-id>\" /var/log/neutron/*.log /var/log/cinder/*.log | sort",
+    "chronyc tracking"
+  ],
+  "not_yet": "Not yet: retry the action · set --state · debug=True in production · rotate the logs",
+  "footer_left": "One Command, One Investigation · #18",
+  "footer_right": "Companion to “OpenStack, the Day After Tomorrow”"
+}
