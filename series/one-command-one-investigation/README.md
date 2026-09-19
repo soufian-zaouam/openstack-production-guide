@@ -31,7 +31,6 @@ The series is part of the [OpenStack Production Guide](../../README.md) and a te
 - **The episode** (`NN-<command>.md`) — the technical source of truth: context, investigation, commands, hypotheses, verifications, version notes, sources, precautions and the lesson. Written to be used on its own during an incident.
 - **The investigation memo** (`memo/NN-memo.png`) — a one-page card, generated from `memo/NN-memo.json` with `memo/render_memo.py` so that every command on the card is exact. The JSON is the source; edit it and re-render rather than editing the image.
 
-Each episode is also announced by a short post on LinkedIn whose only job is discovery. Those posts are not part of this repository: the depth stays here, and LinkedIn is never a second guide.
 
 Commands that change state are never presented as troubleshooting steps. When one appears, it comes with its impact, blast radius, prerequisites, rollback, and the conditions under which it must not be run.
 
@@ -85,9 +84,6 @@ The series follows one VM end to end: Nova's view, the hypervisor, the guest, th
 | 19 | [`dmesg -T`, `systemctl`, `top`, `df`, `ss -s`](19-compute-host-as-a-machine.md) | OpenStack symptoms, host cause | the compute node as a machine | I | published |
 | 20 | [Complete investigation](20-complete-investigation.md) | from the alert to the root cause | the whole chain | A | published |
 
-## Reserve subjects
-
-Candidates for a second season, or to replace an episode: Keystone (`openstack token issue`, `openstack endpoint list`: the 401s and 503s that are not what they look like); Glance (`image show`, images stuck in `queued`, image conversion on the Cinder host); live migration observed from the hypervisor (`virsh domjobinfo`, `server migration list`); `nova-manage` for state inconsistencies, with `db archive_deleted_rows` as a controlled change; and one episode on `openstack server set --state`, the series' first STATE CHANGING command, treated as a decision and not as a repair.
 
 ## Rules
 
