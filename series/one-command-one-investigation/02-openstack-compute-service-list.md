@@ -104,15 +104,8 @@ forced_down true                        → someone claimed the host is fenced; 
 
 ## 6. Next investigation
 
-Two checks happen before touching the host, and both are read-only.
 
-Out of band first. Whatever the BMC/IPMI/iDRAC/iLO console says about power state is the only evidence that does not go through the operating system you are trying to diagnose:
-
-```bash
-ipmitool -I lanplus -H <bmc-address> -U <user> -P <password> power status
-```
-
-Then, on the host if it answers, at the time given by `Updated At`:
+On the host if it answers, at the time given by `Updated At`:
 
 ```bash
 systemctl status nova-compute
