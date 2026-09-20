@@ -29,7 +29,6 @@
   ],
   "next_check": [
     "openstack compute service list",
-    "ipmitool -I lanplus -H <bmc> -U <user> power status",
     "journalctl -u nova-compute --since \"<T - 10 min>\"",
     "ss -tnp | grep -E ':5671|:5672'"
   ],
