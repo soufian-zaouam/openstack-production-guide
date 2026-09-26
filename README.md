@@ -2,6 +2,11 @@
 
 **How to operate and troubleshoot OpenStack in production.**
 
+[![Release](https://img.shields.io/github/v/release/soufian-zaouam/openstack-production-guide?label=release&style=flat-square)](https://github.com/soufian-zaouam/openstack-production-guide/releases/latest)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey?style=flat-square)](LICENSE)
+[![Series](https://img.shields.io/badge/series-20%20episodes-1f6feb?style=flat-square)](series/one-command-one-investigation/README.md)
+[![Incident cases](https://img.shields.io/badge/incident%20cases-6-8250df?style=flat-square)](incidents/README.md)
+
 A field guide for engineers who run OpenStack after deployment: investigation paths by symptom and by command, an index by exact error message, anonymised incident case studies with their decisions, and the methodology for changing a platform that still carries workloads that matter.
 
 > Production troubleshooting is a methodology, not a list of commands.
@@ -17,6 +22,12 @@ A field guide for engineers who run OpenStack after deployment: investigation pa
 | **a decision to make**, or a question about how an incident was handled: evacuate or not, stop the APIs or not, patch without capacity | [`incidents/`](incidents/README.md) | six anonymised cases in RCA format: timeline, investigation, cause in three layers, the decision and the options rejected, blast radius and rollback, follow-ups |
 
 Underneath all four: [`methodology/`](methodology/) (before you act, changes and rollback, root cause analysis, escalation, and the incident and decision record templates) and [`reference/`](reference/) (quick reference by question, upstream documentation).
+
+<p align="center">
+  <a href="series/one-command-one-investigation/18-request-id-log-correlation.md"><img src="series/one-command-one-investigation/memo/18-memo.png" width="420" alt="Investigation memo, episode #18: correlating one request across Nova, Placement, Neutron and Glance by request ID"></a>
+  <br>
+  <sub>Every episode of the series comes with a one-page investigation memo, generated from its JSON source. Above: episode #18, request-ID log correlation.</sub>
+</p>
 
 ## What this repository is
 
@@ -74,7 +85,7 @@ incidents/                         anonymised cases in RCA format
 reference/                         quick reference by question, upstream documentation
 ```
 
-The printable field guide (PDF, 11 pages, the first edition of the troubleshooting pages) is published as an asset of the [releases](https://github.com/soufian-zaouam/openstack-production-guide/releases).
+The printable field guide (PDF, 11 pages, the first edition of the troubleshooting pages) and the twenty investigation memos (ZIP) are attached as assets to the [latest release](https://github.com/soufian-zaouam/openstack-production-guide/releases/latest).
 
 ## How to use it
 
@@ -168,6 +179,8 @@ This repository is its practical companion. The book explains *why* control over
 
 The book is free and available as a PDF from its [GitHub releases](https://github.com/soufian-zaouam/openstack-the-day-after-tomorrow/releases).
 
+For a first read, the **[Short Guide](https://github.com/soufian-zaouam/openstack-the-day-after-tomorrow-guide)** condenses the book into 18 illustrated pages.
+
 ## Roadmap
 
 - **Season 2 of the series**: Keystone (`token issue`, `endpoint list`), Glance (images stuck in `queued`), live migration observed from the hypervisor (`virsh domjobinfo`, `server migration list`), `nova-manage` for state inconsistencies, and `openstack server set --state` treated as a decision.
@@ -184,4 +197,4 @@ OpenStack is a trademark of the Open Infrastructure Foundation. This is independ
 
 ## Author
 
-**Soufian Zaouam** — OpenStack production engineer / architect, author of *OpenStack, the Day After Tomorrow*.
+**Soufian Zaouam** — platform engineer, Day-2 operations of mission-critical OpenStack platforms; author of *[OpenStack, the Day After Tomorrow](https://github.com/soufian-zaouam/openstack-the-day-after-tomorrow)*. [LinkedIn](https://www.linkedin.com/in/soufian-zaouam)

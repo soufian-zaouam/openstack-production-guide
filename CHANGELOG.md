@@ -22,6 +22,8 @@ All notable changes to this repository. The format follows [Keep a Changelog](ht
 
 ## [1.0] — 2026-09-17
 
+Initial version, not published as a separate release; its content is included in 1.1, and its printable field guide is attached to the 1.1 release.
+
 ### Added
 
 - First release: `README.md`, `LICENSE` (CC BY-SA 4.0), `CONTRIBUTING.md`; `methodology/` (production troubleshooting principles, before you act, changes and rollback, root cause analysis, escalation checklist); `troubleshooting/` (first commands, VM unreachable, VM stuck in BUILD / ERROR, compute, networking, storage, control plane services, RabbitMQ, MariaDB / Galera, Keystone, logs); `reference/` (quick reference by question, upstream documentation); the printable field guide (PDF, 11 pages).
